@@ -9,7 +9,7 @@ CREATE  table  if not exists Books(
     title varchar(100) not null ,
     author varchar(100) not null,
     published_year int,
-    available boolean,
+    available boolean default true,
     constraint pk_Books primary key (book_id)
 );
 
@@ -20,3 +20,9 @@ CREATE  table  if not exists Members(
     join_date date default now(),
     constraint pk_Members primary key (member_id)
 );
+
+-- DROP TABlE library.members;
+-- DROP  TABLE library.books;
+--
+-- set search_path to sales;
+-- DROP TABLE orderdetails, orders,products
