@@ -12,21 +12,6 @@ CREATE table if not exists Course
     duration   int
 );
 
-Dưới đây là bộ dữ liệu mẫu mình đã thiết kế sẵn để thỏa mãn tất cả các điều kiện của bạn (có khóa học > 30h, có khóa "Demo", có khóa "SQL", và có mức giá đa dạng) cùng với các câu lệnh giải quyết từng yêu cầu.
-
-1. Tạo bảng và Chèn dữ liệu mẫu (Ít nhất 6 khóa)
-SQL
-
--- Tạo bảng (nếu chưa có)
-CREATE TABLE IF NOT EXISTS Course
-(
-    id         SERIAL PRIMARY KEY,
-    title      VARCHAR(100),
-    instructor VARCHAR(50),
-    price      NUMERIC(10, 2),
-    duration   INT -- Đơn vị: giờ
-);
-
 
 -- 1. Thêm ít nhất 6 khóa học vào bảng
 INSERT INTO Course (title, instructor, price, duration)
