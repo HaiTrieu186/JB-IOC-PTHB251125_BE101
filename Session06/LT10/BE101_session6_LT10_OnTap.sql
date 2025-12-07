@@ -51,30 +51,30 @@ select name, city
 from NewCustomers;
 
 -- 3. Tính số lượng khách hàng ở từng thành phố (dùng GROUP BY city)
-select customer_union.city, count(customer_union.id)
-from (select *
-      from OldCustomers
-      union
-      select *
-      from NewCustomers) as customer_union
+select customer_union.city, count(customer_union.name)
+from (SELECT name, city
+      FROM OldCustomers
+      UNION
+      SELECT name, city
+      FROM NewCustomers) as customer_union
 group by customer_union.city;
 
 -- 4. Tìm thành phố có nhiều khách hàng nhất (dùng Subquery và MAX)
-select customer_union.city, count(customer_union.id) as "Số lượng"
-from (select *
-      from OldCustomers
-      union
-      select *
-      from NewCustomers) as customer_union
+select customer_union.city, count(customer_union.name) as "Số lượng"
+from (SELECT name, city
+      FROM OldCustomers
+      UNION
+      SELECT name, city
+      FROM NewCustomers) as customer_union
 group by customer_union.city
-having count(customer_union.id) = (select max(customer_by_city."Số lượng")
-                                   from (select count(customer_union.id) as "Số lượng"
-                                         from (select *
-                                               from OldCustomers
-                                               union
-                                               select *
-                                               from NewCustomers) as customer_union
-                                         group by customer_union.city) as customer_by_city);
+having count(customer_union.name) = (select max(customer_by_city."Số lượng")
+                                     from (select count(customer_union.name) as "Số lượng"
+                                           from (SELECT name, city
+                                                 FROM OldCustomers
+                                                 UNION
+                                                 SELECT name, city
+                                                 FROM NewCustomers) as customer_union
+                                           group by customer_union.city) as customer_by_city);
 
 
 
