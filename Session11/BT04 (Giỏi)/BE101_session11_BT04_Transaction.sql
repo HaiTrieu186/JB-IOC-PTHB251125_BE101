@@ -27,34 +27,37 @@ VALUES ('Nguyen Van A', 5000.00),
 
 create or replace procedure withdraw_money(
     in_account_from int,
-    in_amount decimal(12,2)
+    in_amount decimal(12, 2)
 )
-language plpgsql
-as $$
+    language plpgsql
+as
+$$
+declare
+    v_balance decimal(12, 2);
 begin
-    -- Kiểm tra số dư
-    if (select balance
-        from accounts
-        where account_id = in_account_from) < in_amount then
-            raise exception 'Không đủ số tiền để rút';
+    select balance
+    into v_balance
+    from accounts
+    where account_id = in_account_from;
+
+    if v_balance isnull then
+        raise exception 'Tài khoản ID % không tồn tại', in_account_from;
     end if;
 
     -- Cập nhật số dư
     update accounts
-    set balance=balance-in_amount
-    where account_id=in_account_from;
+    set balance=balance - in_amount
+    where account_id = in_account_from;
 
     -- Ghi vào transactions
     insert into transactions(account_id, amount, trans_type)
     values (in_account_from, in_amount, 'WITHDRAW');
 
 
-
 EXception
     WHEN OTHERS THEN
         ROLLBACK;
         raise exception 'Đã có lỗi: %', SQLERRM;
-        RAISE;
 end;
 $$;
 
